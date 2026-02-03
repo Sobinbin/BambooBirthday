@@ -99,27 +99,27 @@ const autoPlayTimer = ref(null)
 
 const slides = [
   {
-    image: '/src/assets/images/birthday1.jpg',
+    image: './assets/images/birthday1.jpg',
     title: '初次相遇',
     message: '还记得我们第一次见面的场景吗？那天阳光正好，你笑着走进我的世界，从此我的生活多了一抹绚丽的色彩。'
   },
   {
-    image: '/src/assets/images/birthday2.jpg',
+    image: './assets/images/birthday2.jpg',
     title: '共同成长',
     message: '这些年来，我们一起经历了许多难忘的时刻。每一个挑战都让我们更加坚强，每一次成功都让我们更加珍惜彼此。'
   },
   {
-    image: '/src/assets/images/birthday3.jpg',
+    image: './assets/images/birthday3.jpg',
     title: '温暖陪伴',
     message: '谢谢你总是陪在我身边，无论是开心还是难过。你的支持和鼓励是我前进路上最温暖的力量。'
   },
   {
-    image: '/src/assets/images/birthday4.jpg',
+    image: './assets/images/birthday4.jpg',
     title: '美好时光',
     message: '那些一起欢笑、一起分享、一起成长的日子，都是我心中最珍贵的宝藏。每一张照片都承载着我们的美好回忆。'
   },
   {
-    image: '/src/assets/images/birthday5.jpg',
+    image: './assets/images/birthday5.jpg',
     title: '未来可期',
     message: '新的一岁，愿所有的美好都如期而至。愿你的梦想都能实现，愿你的笑容永远灿烂。生日快乐！'
   }
