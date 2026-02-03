@@ -1,94 +1,269 @@
 <template>
-  <div class="birthday-container">
-    <div class="cake-container">
-      <div class="cake">
-        <div class="candle" v-for="n in 5" :key="n">
-          <div class="flame" :class="{ 'blowing': isBlowing }"></div>
+  <div class="birthday-app" @click="handleClick">
+    <!-- 开场页面 -->
+    <div v-if="stage === 'opening'" class="stage opening">
+      <div class="cake-container">
+        <div class="cake">
+          <div class="candle" v-for="n in 5" :key="n">
+            <div class="flame" :class="{ 'blowing': isBlowing }"></div>
+          </div>
+          <div class="cake-layer layer1"></div>
+          <div class="cake-layer layer2"></div>
+          <div class="cake-layer layer3"></div>
         </div>
-        <div class="cake-layer layer1"></div>
-        <div class="cake-layer layer2"></div>
-        <div class="cake-layer layer3"></div>
+      </div>
+      
+      <div class="opening-text">
+        <h1 class="title" :class="{ 'show': showTitle }">
+          生日快乐
+        </h1>
+        <p class="subtitle" :class="{ 'show': showSubtitle }">
+          一份特别的祝福送给特别的你
+        </p>
+        <button @click.stop="startJourney" class="start-btn" :class="{ 'show': showBtn }">
+          开始回忆之旅
+        </button>
+      </div>
+      
+      <div class="floating-hearts">
+        <div v-for="(heart, index) in hearts" :key="index" class="heart" :style="heart.style">
+          ❤️
+        </div>
       </div>
     </div>
-    
-    <div class="message-container">
-      <h1 class="birthday-title" :class="{ 'show': showTitle }">
-        {{ birthdayMessage }}
-      </h1>
-      <p class="birthday-subtitle" :class="{ 'show': showSubtitle }">
-        {{ subtitle }}
-      </p>
-      <button @click="blowCandles" class="blow-btn" v-if="!isBlowing">
-        🎂 吹蜡烛
-      </button>
-      <p class="wish-text" v-if="isBlowing">
-        {{ wish }}
-      </p>
+
+    <!-- 图片祝福展示 -->
+    <div v-else-if="stage === 'showcase'" class="stage showcase">
+      <transition name="slide" mode="out-in">
+        <div :key="currentIndex" class="showcase-content">
+          <div class="image-container">
+            <img :src="currentSlide.image" :alt="'生日回忆 ' + (currentIndex + 1)" class="slide-image">
+            <div class="image-frame"></div>
+          </div>
+          
+          <div class="text-container">
+            <div class="slide-number">回忆 {{ currentIndex + 1 }} / {{ slides.length }}</div>
+            <h2 class="slide-title">{{ currentSlide.title }}</h2>
+            <p class="slide-message">{{ currentSlide.message }}</p>
+            <div class="hint">点击或等待继续</div>
+          </div>
+        </div>
+      </transition>
+      
+      <div class="progress-dots">
+        <div 
+          v-for="(slide, index) in slides" 
+          :key="index"
+          class="dot"
+          :class="{ 'active': index === currentIndex, 'completed': index < currentIndex }"
+        ></div>
+      </div>
     </div>
-    
-    <div class="confetti" v-for="(confetti, index) in confettiPieces" 
-         :key="index"
-         :style="confetti.style">
+
+    <!-- 结束页面 -->
+    <div v-else-if="stage === 'ending'" class="stage ending">
+      <div class="ending-content">
+        <h1 class="ending-title">愿你的每一天都闪闪发光</h1>
+        <div class="ending-message">
+          <p v-for="(msg, index) in endingMessages" :key="index" :class="{ 'show': showEnding[index] }">
+            {{ msg }}
+          </p>
+        </div>
+        <button @click.stop="restart" class="restart-btn" :class="{ 'show': showRestartBtn }">
+          🎂 再看一遍
+        </button>
+      </div>
+      
+      <div class="confetti-container">
+        <div v-for="(confetti, index) in confettiPieces" :key="index" class="confetti" :style="confetti.style">
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 
-const birthdayMessage = ref('生日快乐！')
-const subtitle = ref('祝你天天开心，万事如意！')
-const wish = ref('愿你的所有愿望都能实现！✨')
+const stage = ref('opening')
 const showTitle = ref(false)
 const showSubtitle = ref(false)
+const showBtn = ref(false)
 const isBlowing = ref(false)
+const currentIndex = ref(0)
+const hearts = ref([])
 const confettiPieces = ref([])
+const showEnding = ref([false, false, false, false])
+const showRestartBtn = ref(false)
+const autoPlayTimer = ref(null)
+
+const slides = [
+  {
+    image: '/src/assets/images/birthday1.jpg',
+    title: '初次相遇',
+    message: '还记得我们第一次见面的场景吗？那天阳光正好，你笑着走进我的世界，从此我的生活多了一抹绚丽的色彩。'
+  },
+  {
+    image: '/src/assets/images/birthday2.jpg',
+    title: '共同成长',
+    message: '这些年来，我们一起经历了许多难忘的时刻。每一个挑战都让我们更加坚强，每一次成功都让我们更加珍惜彼此。'
+  },
+  {
+    image: '/src/assets/images/birthday3.jpg',
+    title: '温暖陪伴',
+    message: '谢谢你总是陪在我身边，无论是开心还是难过。你的支持和鼓励是我前进路上最温暖的力量。'
+  },
+  {
+    image: '/src/assets/images/birthday4.jpg',
+    title: '美好时光',
+    message: '那些一起欢笑、一起分享、一起成长的日子，都是我心中最珍贵的宝藏。每一张照片都承载着我们的美好回忆。'
+  },
+  {
+    image: '/src/assets/images/birthday5.jpg',
+    title: '未来可期',
+    message: '新的一岁，愿所有的美好都如期而至。愿你的梦想都能实现，愿你的笑容永远灿烂。生日快乐！'
+  }
+]
+
+const endingMessages = [
+  '感谢你出现在我的生命里',
+  '带给我无尽的快乐和温暖',
+  '愿你平安喜乐，万事胜意',
+  '明年今天，我们继续一起庆祝！'
+]
+
+const currentSlide = computed(() => slides[currentIndex.value])
 
 onMounted(() => {
-  setTimeout(() => {
-    showTitle.value = true
-  }, 500)
-  setTimeout(() => {
-    showSubtitle.value = true
-  }, 1000)
+  setTimeout(() => showTitle.value = true, 300)
+  setTimeout(() => showSubtitle.value = true, 600)
+  setTimeout(() => showBtn.value = true, 900)
+  createFloatingHearts()
 })
 
-const blowCandles = () => {
+const createFloatingHearts = () => {
+  for (let i = 0; i < 15; i++) {
+    hearts.value.push({
+      style: {
+        left: Math.random() * 100 + '%',
+        top: Math.random() * 100 + '%',
+        animationDelay: Math.random() * 5 + 's',
+        fontSize: (Math.random() * 20 + 20) + 'px'
+      }
+    })
+  }
+}
+
+const startJourney = () => {
   isBlowing.value = true
-  createConfetti()
+  setTimeout(() => {
+    stage.value = 'showcase'
+    startAutoPlay()
+  }, 800)
+}
+
+const startAutoPlay = () => {
+  clearTimeout(autoPlayTimer.value)
+  autoPlayTimer.value = setTimeout(() => {
+    nextSlide()
+  }, 5000)
+}
+
+const handleClick = () => {
+  if (stage.value === 'showcase') {
+    clearTimeout(autoPlayTimer.value)
+    nextSlide()
+  }
+}
+
+const nextSlide = () => {
+  if (currentIndex.value < slides.length - 1) {
+    currentIndex.value++
+    startAutoPlay()
+  } else {
+    setTimeout(() => {
+      showEndingStage()
+    }, 500)
+  }
+}
+
+const showEndingStage = () => {
+  stage.value = 'ending'
+  endingMessages.forEach((_, index) => {
+    setTimeout(() => {
+      showEnding.value[index] = true
+    }, (index + 1) * 600)
+  })
+  setTimeout(() => {
+    showRestartBtn.value = true
+    createConfetti()
+  }, 3000)
 }
 
 const createConfetti = () => {
-  const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#f9ca24', '#6c5ce7', '#fd79a8']
-  for (let i = 0; i < 50; i++) {
-    const confetti = {
+  const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#f9ca24', '#6c5ce7', '#fd79a8', '#ff9ff3', '#54a0ff']
+  for (let i = 0; i < 80; i++) {
+    confettiPieces.value.push({
       style: {
         left: Math.random() * 100 + '%',
-        top: '-10px',
+        top: '-20px',
         backgroundColor: colors[Math.floor(Math.random() * colors.length)],
-        animationDelay: Math.random() * 2 + 's',
-        transform: `rotate(${Math.random() * 360}deg)`
+        animationDelay: Math.random() * 3 + 's',
+        transform: `rotate(${Math.random() * 360}deg)`,
+        width: (Math.random() * 10 + 8) + 'px',
+        height: (Math.random() * 10 + 8) + 'px',
+        borderRadius: Math.random() > 0.5 ? '50%' : '0'
       }
-    }
-    confettiPieces.value.push(confetti)
+    })
   }
+}
+
+const restart = () => {
+  stage.value = 'opening'
+  currentIndex.value = 0
+  isBlowing.value = false
+  showEnding.value = [false, false, false, false]
+  showRestartBtn.value = false
+  confettiPieces.value = []
+  setTimeout(() => showTitle.value = true, 300)
+  setTimeout(() => showSubtitle.value = true, 600)
+  setTimeout(() => showBtn.value = true, 900)
 }
 </script>
 
 <style scoped>
-.birthday-container {
+.birthday-app {
+  width: 100%;
+  min-height: 100vh;
+  font-family: 'Microsoft YaHei', 'PingFang SC', 'Helvetica Neue', sans-serif;
+  overflow: hidden;
+}
+
+/* 通用样式 */
+.stage {
+  width: 100%;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   position: relative;
-  overflow: hidden;
+}
+
+/* 开场页面 */
+.opening {
+  background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 50%, #ff9a9e 100%);
+  padding: 20px;
 }
 
 .cake-container {
   margin-bottom: 40px;
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
 }
 
 .cake {
@@ -166,91 +341,344 @@ const createConfetti = () => {
   bottom: 95px;
 }
 
-.message-container {
+.opening-text {
   text-align: center;
-  color: white;
+  color: #fff;
   z-index: 10;
 }
 
-.birthday-title {
-  font-size: 3rem;
+.title {
+  font-size: 3.5rem;
   font-weight: bold;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
   opacity: 0;
-  transform: translateY(-20px);
-  transition: all 0.8s ease;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  transform: translateY(-30px);
+  transition: all 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2);
 }
 
-.birthday-title.show {
+.title.show {
   opacity: 1;
   transform: translateY(0);
 }
 
-.birthday-subtitle {
-  font-size: 1.5rem;
-  margin-bottom: 30px;
+.subtitle {
+  font-size: 1.3rem;
+  margin-bottom: 40px;
   opacity: 0;
   transform: translateY(20px);
-  transition: all 0.8s ease;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+  transition: all 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.15);
 }
 
-.birthday-subtitle.show {
+.subtitle.show {
   opacity: 1;
   transform: translateY(0);
 }
 
-.blow-btn {
-  padding: 15px 40px;
-  font-size: 1.2rem;
+.start-btn {
+  padding: 18px 50px;
+  font-size: 1.4rem;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
-  border: 3px solid white;
+  border: none;
   border-radius: 50px;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  transform: scale(0.8);
 }
 
-.blow-btn:hover {
+.start-btn.show {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.start-btn:hover {
   transform: scale(1.05);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
 
-.wish-text {
-  font-size: 1.8rem;
+.floating-hearts {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.heart {
+  position: absolute;
+  animation: floatHeart 6s ease-in-out infinite;
+  opacity: 0.6;
+}
+
+@keyframes floatHeart {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-20px) rotate(10deg); }
+}
+
+/* 图片展示页面 */
+.showcase {
+  background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%);
+  padding: 20px;
+  cursor: pointer;
+}
+
+.showcase-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 800px;
+  width: 100%;
+}
+
+.image-container {
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+  margin-bottom: 30px;
+}
+
+.slide-image {
+  width: 100%;
+  height: auto;
+  border-radius: 20px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+  display: block;
+}
+
+.image-frame {
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  right: -10px;
+  bottom: -10px;
+  border: 4px solid rgba(255, 255, 255, 0.5);
+  border-radius: 25px;
+  pointer-events: none;
+}
+
+.text-container {
+  text-align: center;
+  color: white;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  width: 100%;
+  max-width: 600px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.slide-number {
+  font-size: 1rem;
+  opacity: 0.8;
+  margin-bottom: 15px;
+  letter-spacing: 2px;
+}
+
+.slide-title {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.slide-message {
+  font-size: 1.2rem;
+  line-height: 1.8;
+  margin-bottom: 15px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.hint {
+  font-size: 0.9rem;
+  opacity: 0.7;
+  margin-top: 15px;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 0.9; }
+}
+
+.progress-dots {
+  display: flex;
+  gap: 10px;
   margin-top: 30px;
-  animation: fadeInUp 1s ease;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transition: all 0.3s ease;
+}
+
+.dot.active {
+  width: 35px;
+  border-radius: 6px;
+  background: white;
+}
+
+.dot.completed {
+  background: rgba(255, 255, 255, 0.7);
+}
+
+/* 过渡动画 */
+.slide-enter-active,
+.slide-leave-active {
+  transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.slide-enter-from {
+  opacity: 0;
+  transform: translateX(100px) scale(0.9);
+}
+
+.slide-leave-to {
+  opacity: 0;
+  transform: translateX(-100px) scale(0.9);
+}
+
+/* 结束页面 */
+.ending {
+  background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 50%, #ff9a9e 100%);
+  padding: 20px;
+}
+
+.ending-content {
+  text-align: center;
+  color: white;
+  z-index: 10;
+  max-width: 600px;
+  padding: 40px 20px;
+}
+
+.ending-title {
+  font-size: 2.8rem;
+  font-weight: bold;
+  margin-bottom: 50px;
+  text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2);
+  animation: bounceIn 1s ease;
+}
+
+@keyframes bounceIn {
+  0% { opacity: 0; transform: scale(0.3); }
+  50% { transform: scale(1.05); }
+  70% { transform: scale(0.9); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+.ending-message p {
+  font-size: 1.5rem;
+  margin-bottom: 25px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.ending-message p.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.restart-btn {
+  margin-top: 40px;
+  padding: 18px 50px;
+  font-size: 1.4rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  transform: scale(0.8);
+}
+
+.restart-btn.show {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.restart-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.confetti-container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  overflow: hidden;
 }
 
 .confetti {
   position: absolute;
-  width: 10px;
-  height: 10px;
-  animation: fall 3s linear forwards;
+  animation: confettiFall 4s linear forwards;
 }
 
-@keyframes fall {
+@keyframes confettiFall {
   0% {
-    top: -10px;
+    top: -20px;
     opacity: 1;
+    transform: rotate(0deg);
   }
   100% {
     top: 110vh;
     opacity: 0;
+    transform: rotate(720deg);
   }
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .title, .ending-title {
+    font-size: 2.5rem;
+  }
+  
+  .subtitle {
+    font-size: 1.1rem;
+  }
+  
+  .start-btn, .restart-btn {
+    padding: 15px 40px;
+    font-size: 1.2rem;
+  }
+  
+  .slide-title {
+    font-size: 1.5rem;
+  }
+  
+  .slide-message {
+    font-size: 1rem;
+  }
+  
+  .cake {
+    width: 160px;
+    height: 144px;
+  }
+  
+  .candle:nth-child(1) { left: 32px; }
+  .candle:nth-child(2) { left: 56px; }
+  .candle:nth-child(3) { left: 77px; }
+  .candle:nth-child(4) { left: 98px; }
+  .candle:nth-child(5) { left: 122px; }
+  
+  .layer1 { width: 144px; height: 40px; }
+  .layer2 { width: 112px; height: 36px; }
+  .layer3 { width: 80px; height: 32px; }
 }
 </style>
