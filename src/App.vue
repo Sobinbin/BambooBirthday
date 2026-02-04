@@ -99,30 +99,55 @@ const autoPlayTimer = ref(null)
 
 const slides = [
   {
-    image: './assets/images/birthday1.jpg',
-    title: '初次相遇',
+    image: 'https://raw.githubusercontent.com/Sobinbin/BambooBirthday/resource/11_29.jpg',
+    title: '11.29',
     message: '还记得我们第一次见面的场景吗？那天阳光正好，你笑着走进我的世界，从此我的生活多了一抹绚丽的色彩。'
   },
   {
-    image: './assets/images/birthday2.jpg',
-    title: '共同成长',
+    image: 'https://raw.githubusercontent.com/Sobinbin/BambooBirthday/resource/12_14.jpg',
+    title: '12.14',
     message: '这些年来，我们一起经历了许多难忘的时刻。每一个挑战都让我们更加坚强，每一次成功都让我们更加珍惜彼此。'
   },
   {
-    image: './assets/images/birthday3.jpg',
-    title: '温暖陪伴',
+    image: 'https://raw.githubusercontent.com/Sobinbin/BambooBirthday/resource/12_21.jpg',
+    title: '12.21',
     message: '谢谢你总是陪在我身边，无论是开心还是难过。你的支持和鼓励是我前进路上最温暖的力量。'
   },
   {
-    image: './assets/images/birthday4.jpg',
-    title: '美好时光',
+    image: 'https://raw.githubusercontent.com/Sobinbin/BambooBirthday/resource/12_29.jpg',
+    title: '12.29',
     message: '那些一起欢笑、一起分享、一起成长的日子，都是我心中最珍贵的宝藏。每一张照片都承载着我们的美好回忆。'
   },
   {
-    image: './assets/images/birthday5.jpg',
-    title: '未来可期',
+    image: 'https://raw.githubusercontent.com/Sobinbin/BambooBirthday/resource/1_11.jpg',
+    title: '1.11',
     message: '新的一岁，愿所有的美好都如期而至。愿你的梦想都能实现，愿你的笑容永远灿烂。生日快乐！'
-  }
+  },
+  {
+    image: 'https://raw.githubusercontent.com/Sobinbin/BambooBirthday/resource/1_16.jpg',
+    title: '1.16',
+    message: '别再刀我了'
+  },
+  {
+    image: 'https://raw.githubusercontent.com/Sobinbin/BambooBirthday/resource/1_18.jpg',
+    title: '1.18',
+    message: '还要一起去很多地方'
+  },
+  {
+    image: 'https://raw.githubusercontent.com/Sobinbin/BambooBirthday/resource/1_25.jpg',
+    title: '1.25',
+    message: '你是我生命中唯一的人，是我生命中唯一的人'
+  },
+  {
+    image: 'https://raw.githubusercontent.com/Sobinbin/BambooBirthday/resource/1_29.jpg',
+    title: '1.29',
+    message: '我喜欢你'
+  },
+  {
+    image: 'https://raw.githubusercontent.com/Sobinbin/BambooBirthday/resource/1_31.jpg',
+    title: '1.31',
+    message: '你是我生命中唯一的人，是我生命中唯一的人'
+  },
 ]
 
 const endingMessages = [
