@@ -1,5 +1,10 @@
 <template>
   <div class="birthday-app" @click="handleClick">
+    <!-- 网易云音乐播放器 -->
+    <div class="music-player">
+      <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=2729780974&auto=1&height=32"></iframe>
+    </div>
+    
     <!-- 开场页面 -->
     <div v-if="stage === 'opening'" class="stage opening">
       <div class="cake-container">
@@ -266,6 +271,22 @@ const restart = () => {
 </script>
 
 <style scoped>
+/* 网易云音乐播放器 */
+.music-player {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+}
+
+.music-player:hover {
+  transform: scale(1.02);
+}
+
 .birthday-app {
   width: 100%;
   min-height: 100vh;
@@ -720,5 +741,15 @@ const restart = () => {
   .layer1 { width: 144px; height: 40px; }
   .layer2 { width: 112px; height: 36px; }
   .layer3 { width: 80px; height: 32px; }
+  
+  .music-player {
+    width: 280px;
+    height: 380px;
+  }
+  
+  .music-player iframe {
+    width: 280px;
+    height: 380px;
+  }
 }
 </style>
