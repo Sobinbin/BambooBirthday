@@ -64,7 +64,7 @@
     <!-- 结束页面 -->
     <div v-else-if="stage === 'ending'" class="stage ending">
       <div class="ending-content">
-        <h1 class="ending-title">愿你的每一天都闪闪发光</h1>
+        <h1 class="ending-title">感谢你出现在我的生命里</h1>
         <div class="ending-message">
           <p v-for="(msg, index) in endingMessages" :key="index" :class="{ 'show': showEnding[index] }">
             {{ msg }}
@@ -101,56 +101,59 @@ const autoPlayTimer = ref(null)
 const slides = [
   {
     image: 'https://raw.githubusercontent.com/Sobinbin/BambooBirthday/resource/11_29.jpg',
-    title: '11.29',
-    message: '还记得第一次见面的场景吗，如果下次去路演计划被选中，要一起唱哪首歌呢？天冷的时候记得穿秋裤哦！'
+    title: '11.29-路演计划',
+    message: '还记得第一次见面的场景吗，如果下次被选中，要一起唱哪首歌呢？天冷的时候记得穿秋裤哦！'
   },
   {
     image: 'https://raw.githubusercontent.com/Sobinbin/BambooBirthday/resource/12_14.jpg',
-    title: '12.14',
+    title: '12.14-坦白局',
     message: '坏了，好像喜欢上和你一块唱歌🎤喝酒🍷了。要保守我们之间的秘密哦🤫。'
   },
   {
     image: 'https://raw.githubusercontent.com/Sobinbin/BambooBirthday/resource/12_21.jpg',
-    title: '12.21',
+    title: '12.21-崇礼',
     message: '心跳💗加速是因为滑雪🎿还是因为你呢，有些分不清了。谢谢你教会了我，在哪摔倒，就在哪拍照。'
   },
   {
     image: 'https://raw.githubusercontent.com/Sobinbin/BambooBirthday/resource/1_11.jpg',
-    title: '1.11',
-    message: '《花束般的恋爱》：有人说要是一起约了三次饭还没有表白，就只会成为朋友，我逐渐变得焦虑起来。'
+    title: '1.11-花束般的恋爱',
+    message: '看到了你脆弱柔软的一面，对于养过猫的人，我知道，猫咪翻肚皮意味着她很信任你。'
   },
   {
     image: 'https://raw.githubusercontent.com/Sobinbin/BambooBirthday/resource/1_16.jpg',
-    title: '1.16',
+    title: '1.16-巅峰对决',
     message: '别再刀我了'
   },
   {
     image: 'https://raw.githubusercontent.com/Sobinbin/BambooBirthday/resource/1_18.jpg',
-    title: '1.18',
+    title: '1.18-颐和园',
     message: '喜欢你笑起来的样子。你答应我了还要一起去好多好多地方，故宫、景山、北海公园......'
   },
   {
     image: 'https://raw.githubusercontent.com/Sobinbin/BambooBirthday/resource/1_25.jpg',
-    title: '1.25',
-    message: '嘤嘤嘤，别再rollback了！'
+    title: '1.25-坏女人',
+    message: '🐱嘤嘤嘤，别再rollback了！'
   },
   {
     image: 'https://raw.githubusercontent.com/Sobinbin/BambooBirthday/resource/1_29.jpg',
-    title: '1.29',
+    title: '1.29-❤️',
     message: '我喜欢你'
   },
   {
     image: 'https://raw.githubusercontent.com/Sobinbin/BambooBirthday/resource/1_31.jpg',
-    title: '1.31',
+    title: '1.31-Page One',
     message: '这位同志，请不要停止骚扰！'
   },
 ]
 
 const endingMessages = [
-  '感谢你出现在我的生命里',
-  '带给我无尽的快乐和温暖',
-  '愿你平安喜乐，万事胜意',
-  '明年今天，我们继续一起庆祝！'
+  '不管未来会怎么样',
+  '至少我们现在很开心',
+  '不管结局会怎么样',
+  '至少想念的人是你',
+  '我不会把他当作游戏',
+  '因为我真心对你',
+  '生日快乐，倩叶'
 ]
 
 const currentSlide = computed(() => slides[currentIndex.value])
