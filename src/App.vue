@@ -15,13 +15,13 @@
       
       <div class="opening-text">
         <h1 class="title" :class="{ 'show': showTitle }">
-          生日快乐
+          Bamboo，生日快乐
         </h1>
         <p class="subtitle" :class="{ 'show': showSubtitle }">
-          一份特别的祝福送给特别的你
+          总有些惊奇的际遇，比方说当我遇见你
         </p>
         <button @click.stop="startJourney" class="start-btn" :class="{ 'show': showBtn }">
-          开始回忆之旅
+          开始吧！
         </button>
       </div>
       
@@ -42,7 +42,7 @@
           </div>
           
           <div class="text-container">
-            <div class="slide-number">回忆 {{ currentIndex + 1 }} / {{ slides.length }}</div>
+            <div class="slide-number">{{ currentIndex + 1 }} / {{ slides.length }}</div>
             <h2 class="slide-title">{{ currentSlide.title }}</h2>
             <p class="slide-message">{{ currentSlide.message }}</p>
             <div class="hint">点击或等待继续</div>
@@ -56,6 +56,7 @@
           :key="index"
           class="dot"
           :class="{ 'active': index === currentIndex, 'completed': index < currentIndex }"
+          @click.stop="goToSlide(index)"
         ></div>
       </div>
     </div>
@@ -101,27 +102,22 @@ const slides = [
   {
     image: 'https://raw.githubusercontent.com/Sobinbin/BambooBirthday/resource/11_29.jpg',
     title: '11.29',
-    message: '还记得我们第一次见面的场景吗？那天阳光正好，你笑着走进我的世界，从此我的生活多了一抹绚丽的色彩。'
+    message: '还记得第一次见面的场景吗，如果下次去路演计划被选中，要一起唱哪首歌呢？天冷的时候记得穿秋裤哦！'
   },
   {
     image: 'https://raw.githubusercontent.com/Sobinbin/BambooBirthday/resource/12_14.jpg',
     title: '12.14',
-    message: '这些年来，我们一起经历了许多难忘的时刻。每一个挑战都让我们更加坚强，每一次成功都让我们更加珍惜彼此。'
+    message: '坏了，好像喜欢上和你一块唱歌🎤喝酒🍷了。要保守我们之间的秘密哦🤫。'
   },
   {
     image: 'https://raw.githubusercontent.com/Sobinbin/BambooBirthday/resource/12_21.jpg',
     title: '12.21',
-    message: '谢谢你总是陪在我身边，无论是开心还是难过。你的支持和鼓励是我前进路上最温暖的力量。'
-  },
-  {
-    image: 'https://raw.githubusercontent.com/Sobinbin/BambooBirthday/resource/12_29.jpg',
-    title: '12.29',
-    message: '那些一起欢笑、一起分享、一起成长的日子，都是我心中最珍贵的宝藏。每一张照片都承载着我们的美好回忆。'
+    message: '心跳💗加速是因为滑雪🎿还是因为你呢，有些分不清了。谢谢你教会了我，在哪摔倒，就在哪拍照。'
   },
   {
     image: 'https://raw.githubusercontent.com/Sobinbin/BambooBirthday/resource/1_11.jpg',
     title: '1.11',
-    message: '新的一岁，愿所有的美好都如期而至。愿你的梦想都能实现，愿你的笑容永远灿烂。生日快乐！'
+    message: '《花束般的恋爱》：有人说要是一起约了三次饭还没有表白，就只会成为朋友，我逐渐变得焦虑起来。'
   },
   {
     image: 'https://raw.githubusercontent.com/Sobinbin/BambooBirthday/resource/1_16.jpg',
@@ -131,12 +127,12 @@ const slides = [
   {
     image: 'https://raw.githubusercontent.com/Sobinbin/BambooBirthday/resource/1_18.jpg',
     title: '1.18',
-    message: '还要一起去很多地方'
+    message: '喜欢你笑起来的样子。你答应我了还要一起去好多好多地方，故宫、景山、北海公园......'
   },
   {
     image: 'https://raw.githubusercontent.com/Sobinbin/BambooBirthday/resource/1_25.jpg',
     title: '1.25',
-    message: '你是我生命中唯一的人，是我生命中唯一的人'
+    message: '嘤嘤嘤，别再rollback了！'
   },
   {
     image: 'https://raw.githubusercontent.com/Sobinbin/BambooBirthday/resource/1_29.jpg',
@@ -146,7 +142,7 @@ const slides = [
   {
     image: 'https://raw.githubusercontent.com/Sobinbin/BambooBirthday/resource/1_31.jpg',
     title: '1.31',
-    message: '你是我生命中唯一的人，是我生命中唯一的人'
+    message: '这位同志，请不要停止骚扰！'
   },
 ]
 
@@ -191,7 +187,7 @@ const startAutoPlay = () => {
   clearTimeout(autoPlayTimer.value)
   autoPlayTimer.value = setTimeout(() => {
     nextSlide()
-  }, 5000)
+  }, 10000)
 }
 
 const handleClick = () => {
@@ -210,6 +206,11 @@ const nextSlide = () => {
       showEndingStage()
     }, 500)
   }
+}
+
+const goToSlide = (index) => {
+  currentIndex.value = index
+  startAutoPlay()
 }
 
 const showEndingStage = () => {
@@ -544,6 +545,12 @@ const restart = () => {
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.3);
   transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.dot:hover {
+  background: rgba(255, 255, 255, 0.8);
+  transform: scale(1.2);
 }
 
 .dot.active {
