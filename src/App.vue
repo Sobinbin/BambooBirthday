@@ -144,6 +144,11 @@ const slides = [
     title: '1.31-Page One',
     message: '这位同志，请不要停止骚扰！'
   },
+  {
+    image: 'https://raw.githubusercontent.com/Sobinbin/BambooBirthday/resource/2_5.jpg',
+    title: '2.5-🫂',
+    message: '以后别只顾着rua嗅嗅了，多摸摸妞妞，还有我。'
+  },
 ]
 
 const endingMessages = [
