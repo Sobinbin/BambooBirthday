@@ -1,7 +1,7 @@
 <template>
   <div class="birthday-app" @click="handleClick">
     <!-- 网易云音乐播放器 -->
-    <div class="music-player">
+    <div class="music-player" v-if="!isMobile">
       <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=2729780974&auto=1&height=32"></iframe>
     </div>
     
@@ -128,6 +128,8 @@ import { ref, computed, onMounted } from 'vue'
 
 const stage = ref('password')
 const password = ref('')
+const isMobile = ref(false)
+
 const passwordError = ref('')
 const showTitle = ref(false)
 const showSubtitle = ref(false)
@@ -222,7 +224,12 @@ const checkPassword = () => {
 }
 
 onMounted(() => {
+  checkMobile()
 })
+
+const checkMobile = () => {
+  isMobile.value = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+}
 
 const createFloatingHearts = () => {
   for (let i = 0; i < 15; i++) {
