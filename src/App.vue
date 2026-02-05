@@ -391,7 +391,7 @@ const restart = () => {
 .password-title {
   font-size: 2rem;
   font-weight: bold;
-  color: #667eea;
+  color: #a18cd1;
   margin-bottom: 10px;
 }
 
@@ -414,15 +414,15 @@ const restart = () => {
 
 .password-input:focus {
   outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  border-color: #a18cd1;
+  box-shadow: 0 0 0 3px rgba(161, 140, 209, 0.1);
 }
 
 .password-btn {
   width: 100%;
   padding: 15px;
   font-size: 1.1rem;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%);
   color: white;
   border: none;
   border-radius: 10px;
@@ -433,7 +433,7 @@ const restart = () => {
 
 .password-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 8px 25px rgba(161, 140, 209, 0.4);
 }
 
 .password-error {
@@ -451,7 +451,7 @@ const restart = () => {
 
 /* 开场页面 */
 .opening {
-  background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 50%, #ff9a9e 100%);
+  background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%);
   padding: 20px;
 }
 
@@ -578,7 +578,7 @@ const restart = () => {
 .start-btn {
   padding: 18px 50px;
   font-size: 1.4rem;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%);
   color: white;
   border: none;
   border-radius: 50px;
@@ -754,13 +754,13 @@ const restart = () => {
 
 /* 结束页面 */
 .ending {
-  background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 50%, #ff9a9e 100%);
+  background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%);
   padding: 20px;
 }
 
 /* 信纸页面 */
 .letter {
-  background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
+  background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%);
   padding: 20px;
   cursor: pointer;
   font-family: 'KaiTi', 'STKaiti', 'Georgia', serif;
@@ -900,7 +900,7 @@ const restart = () => {
   margin-top: 40px;
   padding: 18px 50px;
   font-size: 1.4rem;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%);
   color: white;
   border: none;
   border-radius: 50px;
