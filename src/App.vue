@@ -93,7 +93,7 @@
           </div>
           <div class="letter-content">
             <p class="letter-salutation">亲爱的 竹：</p>
-            <p class="letter-body">{{ letterContent }}</p>
+            <p class="letter-body" v-html="letterContent"></p>
             <p class="letter-signature">—— 斌</p>
           </div>
         </div>
@@ -141,7 +141,7 @@ const showRestartBtn = ref(false)
 const autoPlayTimer = ref(null)
 const showLetter = ref(false)
 
-const letterContent = ref('26年的2月6日为你送上26岁的生日祝福，相信这一年你会快乐顺遂，之后亦是如此。可惜今天不是我许愿，要不然我想回到17年，和坐在教室前排的你说一声“你好，我是泽斌”。')
+const letterContent = ref('26年的2月6日为你送上26岁的生日祝福，相信这一年你会快乐顺遂，之后亦是如此。可惜今天不是我许愿，要不然我想回到17年，和坐在教室前排的你说一声“你好，我是泽斌”。还有一份为你挑选的歌单，<a href="https://music.163.com/playlist?id=17725939200&userid=39737377" target="_blank">请注意查收</a>。')
 
 const slides = [
   {
