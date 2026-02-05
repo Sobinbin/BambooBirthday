@@ -127,7 +127,7 @@ const slides = [
   {
     image: 'https://raw.githubusercontent.com/Sobinbin/BambooBirthday/resource/11_29.jpg',
     title: '11.29-路演计划',
-    message: '还记得第一次见面的场景吗，如果下次被选中，要一起唱哪首歌呢？天冷的时候记得穿秋裤哦！'
+    message: '从这一天算，今天是我们认识的第70天。记得第一次见面的场景吗，如果下次被选中，要一起唱哪首歌呢？天冷的时候记得穿秋裤哦！'
   },
   {
     image: 'https://raw.githubusercontent.com/Sobinbin/BambooBirthday/resource/12_14.jpg',
@@ -142,12 +142,12 @@ const slides = [
   {
     image: 'https://raw.githubusercontent.com/Sobinbin/BambooBirthday/resource/1_11.jpg',
     title: '1.11-花束般的恋爱',
-    message: '看到了你脆弱柔软的一面，对于养过猫的人，我知道，猫咪翻肚皮意味着她很信任你。'
+    message: '看到了你脆弱柔软的一面，对于养猫的人，我知道，猫咪翻肚皮意味着她很信任你。'
   },
   {
     image: 'https://raw.githubusercontent.com/Sobinbin/BambooBirthday/resource/1_16.jpg',
     title: '1.16-巅峰对决',
-    message: '别再刀我了'
+    message: '致敬我的三国杀“好”队友，能不能别再🔪我了。'
   },
   {
     image: 'https://raw.githubusercontent.com/Sobinbin/BambooBirthday/resource/1_18.jpg',
@@ -157,7 +157,7 @@ const slides = [
   {
     image: 'https://raw.githubusercontent.com/Sobinbin/BambooBirthday/resource/1_25.jpg',
     title: '1.25-坏女人',
-    message: '🐱嘤嘤嘤，别再rollback了！'
+    message: '🐱嘤嘤嘤，答应我别再提rollback了，我会给你带好多可颂🥐。'
   },
   {
     image: 'https://raw.githubusercontent.com/Sobinbin/BambooBirthday/resource/1_29.jpg',
