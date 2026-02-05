@@ -5,8 +5,26 @@
       <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=298 height=52 src="//music.163.com/outchain/player?type=2&id=2729780974&auto=1&height=32"></iframe>
     </div>
     
+    <!-- 密码验证页面 -->
+    <div v-if="stage === 'password'" class="stage password">
+      <div class="password-container">
+        <div class="password-icon">🔒</div>
+        <h1 class="password-title">生日祝福</h1>
+        <p class="password-subtitle">请输入密码继续</p>
+        <input 
+          v-model="password" 
+          type="password" 
+          class="password-input" 
+          placeholder="输入密码..."
+          @keyup.enter="checkPassword"
+        >
+        <button @click.stop="checkPassword" class="password-btn">进入</button>
+        <p v-if="passwordError" class="password-error">{{ passwordError }}</p>
+      </div>
+    </div>
+    
     <!-- 开场页面 -->
-    <div v-if="stage === 'opening'" class="stage opening">
+    <div v-else-if="stage === 'opening'" class="stage opening">
       <div class="cake-container">
         <div class="cake">
           <div class="candle" v-for="n in 5" :key="n">
@@ -91,7 +109,9 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 
-const stage = ref('opening')
+const stage = ref('password')
+const password = ref('')
+const passwordError = ref('')
 const showTitle = ref(false)
 const showSubtitle = ref(false)
 const showBtn = ref(false)
@@ -168,11 +188,20 @@ const endingMessages = [
 
 const currentSlide = computed(() => slides[currentIndex.value])
 
+const checkPassword = () => {
+  if (password.value === 'HappyBamboo') {
+    stage.value = 'opening'
+    setTimeout(() => showTitle.value = true, 300)
+    setTimeout(() => showSubtitle.value = true, 600)
+    setTimeout(() => showBtn.value = true, 900)
+    createFloatingHearts()
+  } else {
+    passwordError.value = '密码错误，请重试'
+    password.value = ''
+  }
+}
+
 onMounted(() => {
-  setTimeout(() => showTitle.value = true, 300)
-  setTimeout(() => showSubtitle.value = true, 600)
-  setTimeout(() => showBtn.value = true, 900)
-  createFloatingHearts()
 })
 
 const createFloatingHearts = () => {
@@ -303,6 +332,94 @@ const restart = () => {
   align-items: center;
   justify-content: center;
   position: relative;
+}
+
+/* 密码验证页面 */
+.password {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 20px;
+}
+
+.password-container {
+  text-align: center;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 50px 40px;
+  border-radius: 20px;
+  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+  max-width: 400px;
+  width: 90%;
+  animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.password-icon {
+  font-size: 4rem;
+  margin-bottom: 20px;
+}
+
+.password-title {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #667eea;
+  margin-bottom: 10px;
+}
+
+.password-subtitle {
+  font-size: 1rem;
+  color: #666;
+  margin-bottom: 30px;
+}
+
+.password-input {
+  width: 100%;
+  padding: 15px 20px;
+  font-size: 1.1rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  box-sizing: border-box;
+  transition: all 0.3s ease;
+}
+
+.password-input:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.password-btn {
+  width: 100%;
+  padding: 15px;
+  font-size: 1.1rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: bold;
+}
+
+.password-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+}
+
+.password-error {
+  color: #e74c3c;
+  margin-top: 15px;
+  font-size: 0.95rem;
+  animation: shake 0.5s ease;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-5px); }
+  40%, 80% { transform: translateX(5px); }
 }
 
 /* 开场页面 */
