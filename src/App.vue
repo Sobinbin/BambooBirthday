@@ -9,7 +9,7 @@
     <div v-if="stage === 'password'" class="stage password">
       <div class="password-container">
         <div class="password-icon">🔒</div>
-        <h1 class="password-title">生日祝福</h1>
+        <h1 class="password-title">电子offer确认</h1>
         <p class="password-subtitle">请输入密码继续</p>
         <input 
           v-model="password" 
