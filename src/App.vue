@@ -84,6 +84,23 @@
       </div>
     </div>
 
+    <!-- 信纸页面 -->
+    <div v-else-if="stage === 'letter'" class="stage letter" @click="showEndingStage">
+      <div class="letter-container" :class="{ 'show': showLetter }">
+        <div class="letter-paper">
+          <div class="letter-header">
+            <span class="letter-date">2026年2月6日</span>
+          </div>
+          <div class="letter-content">
+            <p class="letter-salutation">亲爱的 竹：</p>
+            <p class="letter-body">{{ letterContent }}</p>
+            <p class="letter-signature">—— 斌</p>
+          </div>
+        </div>
+      </div>
+      <div class="letter-hint">点击继续</div>
+    </div>
+
     <!-- 结束页面 -->
     <div v-else-if="stage === 'ending'" class="stage ending">
       <div class="ending-content">
@@ -122,6 +139,9 @@ const confettiPieces = ref([])
 const showEnding = ref([false, false, false, false])
 const showRestartBtn = ref(false)
 const autoPlayTimer = ref(null)
+const showLetter = ref(false)
+
+const letterContent = ref('26年的2月6日为你送上26岁的生日祝福，相信这一年你会快乐顺遂，之后亦是如此。可惜今天不是我许愿，要不然我想回到17年，和坐在教室前排的你说一声“你好，我是泽斌”。')
 
 const slides = [
   {
@@ -245,7 +265,7 @@ const nextSlide = () => {
     startAutoPlay()
   } else {
     setTimeout(() => {
-      showEndingStage()
+      showLetterStage()
     }, 500)
   }
 }
@@ -253,6 +273,13 @@ const nextSlide = () => {
 const goToSlide = (index) => {
   currentIndex.value = index
   startAutoPlay()
+}
+
+const showLetterStage = () => {
+  stage.value = 'letter'
+  setTimeout(() => {
+    showLetter.value = true
+  }, 300)
 }
 
 const showEndingStage = () => {
@@ -731,6 +758,107 @@ const restart = () => {
   padding: 20px;
 }
 
+/* 信纸页面 */
+.letter {
+  background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
+  padding: 20px;
+  cursor: pointer;
+  font-family: 'KaiTi', 'STKaiti', 'Georgia', serif;
+}
+
+.letter-container {
+  max-width: 700px;
+  width: 90%;
+  padding: 20px;
+  opacity: 0;
+  transform: scale(0.9) translateY(30px);
+  transition: all 1s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.letter-container.show {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
+
+.letter-paper {
+  background: linear-gradient(to bottom, #fef9f3 0%, #fdf6e9 100%);
+  border-radius: 8px;
+  padding: 50px 40px;
+  box-shadow: 
+    0 10px 30px rgba(0, 0, 0, 0.2),
+    inset 0 0 80px rgba(0, 0, 0, 0.05);
+  position: relative;
+  background-image: 
+    repeating-linear-gradient(
+      transparent,
+      transparent 32px,
+      rgba(200, 180, 150, 0.1) 32px,
+      rgba(200, 180, 150, 0.1) 33px
+    );
+}
+
+.letter-paper::before {
+  content: '';
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  right: 20px;
+  bottom: 20px;
+  border: 2px solid rgba(139, 115, 85, 0.3);
+  border-radius: 4px;
+  pointer-events: none;
+}
+
+.letter-header {
+  text-align: right;
+  margin-bottom: 30px;
+}
+
+.letter-date {
+  font-size: 1.1rem;
+  color: #8b7355;
+  font-family: 'KaiTi', 'STKaiti', 'Georgia', serif;
+}
+
+.letter-content {
+  color: #5d4037;
+  line-height: 2.2;
+}
+
+.letter-salutation {
+  font-size: 1.5rem;
+  margin-bottom: 25px;
+  font-weight: bold;
+  color: #3e2723;
+}
+
+.letter-body {
+  font-size: 1.3rem;
+  text-indent: 2em;
+  margin-bottom: 30px;
+  text-align: justify;
+  letter-spacing: 0.05em;
+}
+
+.letter-signature {
+  text-align: right;
+  font-size: 1.3rem;
+  margin-top: 40px;
+  font-style: italic;
+  color: #6d4c41;
+}
+
+.letter-hint {
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 1rem;
+  animation: pulse 2s infinite;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+}
+
 .ending-content {
   text-align: center;
   color: white;
@@ -867,6 +995,23 @@ const restart = () => {
   .music-player iframe {
     width: 280px;
     height: 380px;
+  }
+  
+  .letter-paper {
+    padding: 35px 25px;
+  }
+  
+  .letter-salutation {
+    font-size: 1.3rem;
+  }
+  
+  .letter-body {
+    font-size: 1.1rem;
+    line-height: 2;
+  }
+  
+  .letter-signature {
+    font-size: 1.1rem;
   }
 }
 </style>
